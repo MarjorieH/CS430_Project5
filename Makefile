@@ -1,8 +1,8 @@
-make all:
+all:
 	gcc -o ezview ezview.c -lglfw -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
 
-make clean:
+clean:
 	rm ezview
 
-make test:
+test:
 	./ezview testimage.ppm
