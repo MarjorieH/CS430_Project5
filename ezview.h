@@ -20,3 +20,10 @@ Vertex vertices[] = {
   {{1, 1},  {0.99999, 0.99999}},
   {{-1, 1}, {0, 0.99999}}
 };
+
+
+// Function prototype declarations
+void rotate_image(void);
+void translate_image(void);
+void scale_image(void);
+void shear_image(void);

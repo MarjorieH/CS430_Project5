@@ -20,14 +20,42 @@ static const char* fragment_shader_text =
 "    gl_FragColor = texture2D(Texture, TexCoordOut);\n"
 "}\n";
 
-static void error_callback(int error, const char* description)
-{
+static void error_callback(int error, const char* description) {
   fprintf(stderr, "Error: %s\n", description);
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-  glfwSetWindowShouldClose(window, GLFW_TRUE);
+  if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    glfwSetWindowShouldClose(window, GLFW_TRUE);
+  }
+  else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+    translate_image();
+  }
+  else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+    rotate_image();
+  }
+  else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+    scale_image();
+  }
+  else if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+    shear_image();
+  }
+}
+
+void rotate_image(void) {
+  printf("Rotate\n");
+}
+
+void translate_image(void) {
+  printf("Translate\n");
+}
+
+void scale_image(void) {
+  printf("Scale\n");
+}
+
+void shear_image(void) {
+  printf("Shear\n");
 }
 
 void glCompileShaderOrDie(GLuint shader) {
@@ -44,29 +72,6 @@ void glCompileShaderOrDie(GLuint shader) {
     exit(1);
   }
 }
-
-// 4 x 4 image..
-unsigned char image[] = {
-  255, 0, 0, 255,
-  255, 0, 0, 255,
-  255, 0, 0, 255,
-  255, 0, 0, 255,
-
-  0, 255, 0, 255,
-  0, 255, 0, 255,
-  0, 255, 0, 255,
-  0, 255, 0, 255,
-
-  0, 0, 255, 255,
-  0, 0, 255, 255,
-  0, 0, 255, 255,
-  0, 0, 255, 255,
-
-  255, 0, 255, 255,
-  255, 0, 255, 255,
-  255, 0, 255, 255,
-  255, 0, 255, 255
-};
 
 int main(int argc, char *argv[]) {
 
@@ -157,13 +162,13 @@ int main(int argc, char *argv[]) {
 
   while (!glfwWindowShouldClose(window)) {
     float ratio;
-    int canvasWidth, canvasHeight;
+    int width, height;
     mat4x4 m, p, mvp;
 
-    glfwGetFramebufferSize(window, &canvasWidth, &canvasHeight);
-    ratio = canvasWidth / (float) canvasHeight;
+    glfwGetFramebufferSize(window, &width, &height);
+    ratio = width / (float) height;
 
-    glViewport(0, 0, canvasWidth, canvasHeight);
+    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mat4x4_identity(m);
@@ -180,9 +185,6 @@ int main(int argc, char *argv[]) {
   }
 
   glfwDestroyWindow(window);
-
   glfwTerminate();
   exit(EXIT_SUCCESS);
 }
-
-//! [code]
