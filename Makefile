@@ -3,3 +3,6 @@ make all:
 
 make clean:
 	rm ezview
+
+make test:
+	./ezview testimage.ppm
