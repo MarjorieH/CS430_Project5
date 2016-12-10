@@ -1,5 +1,4 @@
 #include "ezview.h"
-#include "pixmap.c"
 
 static const char* vertex_shader_text =
 "uniform mat4 MVP;\n"
@@ -98,7 +97,7 @@ int main(int argc, char *argv[]) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-  window = glfwCreateWindow(640, 480, "ezview", NULL, NULL);
+  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "ezview", NULL, NULL);
   if (!window) {
     glfwTerminate();
     exit(EXIT_FAILURE);
@@ -178,7 +177,7 @@ int main(int argc, char *argv[]) {
 
     glUseProgram(program);
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
