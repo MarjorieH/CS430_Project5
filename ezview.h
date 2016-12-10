@@ -27,8 +27,4 @@ Vertex vertices[] = {
   {{-1, -1}, {  0,   0}} // bottom left
 };
 
-// Function prototype declarations
-void rotate_image(GLFWwindow* window);
-void translate_image(GLFWwindow* window);
-void scale_image(GLFWwindow* window);
-void shear_image(GLFWwindow* window);
+int imageState = 0;

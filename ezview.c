@@ -27,54 +27,18 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
   if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
   }
-  else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-    translate_image(window);
+  else if (key == GLFW_KEY_1 && action == GLFW_PRESS) { // translate
+    imageState = 1;
   }
-  else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-    rotate_image(window);
+  else if (key == GLFW_KEY_2 && action == GLFW_PRESS) { // rotate
+    imageState = 2;
   }
-  else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-    scale_image(window);
+  else if (key == GLFW_KEY_3 && action == GLFW_PRESS) { // scale
+    imageState = 3;
   }
-  else if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-    shear_image(window);
+  else if (key == GLFW_KEY_4 && action == GLFW_PRESS) { // shear
+    imageState = 4;
   }
-}
-
-void rotate_image(GLFWwindow* window) {
-  /*float ratio;
-  int width, height;
-  mat4x4 m, p, mvp;
-
-  glfwGetFramebufferSize(window, &width, &height);
-  ratio = width / (float) height;
-
-  glViewport(0, 0, width, height);
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  mat4x4_identity(m);
-  mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-  mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-  mat4x4_mul(mvp, p, m);
-
-  glUseProgram(program);
-  glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
-
-  glfwSwapBuffers(window);
-  glfwPollEvents();*/
-}
-
-void translate_image(GLFWwindow* window) {
-  printf("Translate\n");
-}
-
-void scale_image(GLFWwindow* window) {
-  printf("Scale\n");
-}
-
-void shear_image(GLFWwindow* window) {
-  printf("Shear\n");
 }
 
 void glCompileShaderOrDie(GLuint shader) {
@@ -190,10 +154,37 @@ int main(int argc, char *argv[]) {
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    mat4x4_identity(m);
-    mat4x4_rotate_Z(m, m, 3.14159);
-    mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    mat4x4_mul(mvp, p, m);
+    if (imageState == 0) { // still image
+      mat4x4_identity(m);
+      mat4x4_rotate_Z(m, m, 3.14159);
+      mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+      mat4x4_mul(mvp, p, m);
+    }
+    else if (imageState == 1) { // translate
+      mat4x4_identity(m);
+      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+      mat4x4_mul(mvp, p, m);
+    }
+    else if (imageState == 2) { // rotate
+      mat4x4_identity(m);
+      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+      mat4x4_mul(mvp, p, m);
+    }
+    else if (imageState == 3) { // scale
+      mat4x4_identity(m);
+      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+      mat4x4_mul(mvp, p, m);
+    }
+    else { // shear
+      mat4x4_identity(m);
+      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+      mat4x4_mul(mvp, p, m);
+    }
+
 
     glUseProgram(program);
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
