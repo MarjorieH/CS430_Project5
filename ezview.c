@@ -28,32 +28,52 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     glfwSetWindowShouldClose(window, GLFW_TRUE);
   }
   else if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-    translate_image();
+    translate_image(window);
   }
   else if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-    rotate_image();
+    rotate_image(window);
   }
   else if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-    scale_image();
+    scale_image(window);
   }
   else if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-    shear_image();
+    shear_image(window);
   }
 }
 
-void rotate_image(void) {
-  printf("Rotate\n");
+void rotate_image(GLFWwindow* window) {
+  /*float ratio;
+  int width, height;
+  mat4x4 m, p, mvp;
+
+  glfwGetFramebufferSize(window, &width, &height);
+  ratio = width / (float) height;
+
+  glViewport(0, 0, width, height);
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  mat4x4_identity(m);
+  mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+  mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+  mat4x4_mul(mvp, p, m);
+
+  glUseProgram(program);
+  glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+
+  glfwSwapBuffers(window);
+  glfwPollEvents();*/
 }
 
-void translate_image(void) {
+void translate_image(GLFWwindow* window) {
   printf("Translate\n");
 }
 
-void scale_image(void) {
+void scale_image(GLFWwindow* window) {
   printf("Scale\n");
 }
 
-void shear_image(void) {
+void shear_image(GLFWwindow* window) {
   printf("Shear\n");
 }
 
@@ -64,7 +84,7 @@ void glCompileShaderOrDie(GLuint shader) {
   if (!compiled) {
     GLint infoLen = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-    char* info = malloc(infoLen+1);
+    char* info = malloc(infoLen + 1);
     GLint done;
     glGetShaderInfoLog(shader, infoLen, &done, info);
     printf("Unable to compile shader: %s\n", info);
@@ -83,7 +103,7 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Error: Unable to open file.\n");
     return(1);
   }
-  storeImage(fh);
+  store_image(fh);
 
   GLFWwindow* window;
   GLuint vertex_buffer, vertex_shader, fragment_shader, program;
@@ -171,7 +191,7 @@ int main(int argc, char *argv[]) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     mat4x4_identity(m);
-    mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+    mat4x4_rotate_Z(m, m, 3.14159);
     mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
     mat4x4_mul(mvp, p, m);
 
@@ -185,5 +205,4 @@ int main(int argc, char *argv[]) {
 
   glfwDestroyWindow(window);
   glfwTerminate();
-  exit(EXIT_SUCCESS);
 }

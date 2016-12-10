@@ -28,7 +28,7 @@ Vertex vertices[] = {
 };
 
 // Function prototype declarations
-void rotate_image(void);
-void translate_image(void);
-void scale_image(void);
-void shear_image(void);
+void rotate_image(GLFWwindow* window);
+void translate_image(GLFWwindow* window);
+void scale_image(GLFWwindow* window);
+void shear_image(GLFWwindow* window);

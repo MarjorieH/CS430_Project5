@@ -71,7 +71,7 @@ void readP6 (FILE* fh) {
   }
 }
 
-void storeImage(FILE* fh) {
+void store_image(FILE* fh) {
 
   // Get the image metadata from the header, making sure to skip over comments
   int headerCount = 0;
