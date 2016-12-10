@@ -2,7 +2,7 @@
 ### CS430: Computer Graphics
 ### Project 5: Image Viewer
 ### Marjorie Hahn
-### 9 November 2016
+### 9 December 2016
 
 This application takes a PPM image file and renders it using OpenGL ES2. This
 image can then have one of the affine transformations applied to it. The supported
