@@ -28,16 +28,22 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     glfwSetWindowShouldClose(window, GLFW_TRUE);
   }
   else if (key == GLFW_KEY_1 && action == GLFW_PRESS) { // translate
+    current = 0.0;
     imageState = 1;
   }
   else if (key == GLFW_KEY_2 && action == GLFW_PRESS) { // rotate
     imageState = 2;
   }
   else if (key == GLFW_KEY_3 && action == GLFW_PRESS) { // scale
+    current = 0.0;
     imageState = 3;
   }
   else if (key == GLFW_KEY_4 && action == GLFW_PRESS) { // shear
+    current = 0.0;
     imageState = 4;
+  }
+  else if (action == GLFW_PRESS) { // reset
+    imageState = 0;
   }
 }
 
@@ -54,6 +60,28 @@ void glCompileShaderOrDie(GLuint shader) {
     printf("Unable to compile shader: %s\n", info);
     exit(1);
   }
+}
+
+void shear(mat4x4 m, float height, float angle) {
+  vec4 a = {1, 0, 0, 0};
+  vec4 b = {angle, 1, 0, 0};
+  vec4 c = {0, 0, 1, 0};
+  vec4 d = {0, 0, 0, 1};
+
+  mat4x4 A;
+
+  mat4x4_col(a, A, 0);
+  mat4x4_col(b, A, 1);
+  mat4x4_col(c, A, 2);
+  mat4x4_col(d, A, 3);
+
+  mat4x4_mul(m, m, A);
+}
+
+void reset_transformations(mat4x4 m) {
+  mat4x4_rotate_Z(m, m, 3.14159);
+  mat4x4_scale(m, m, 1.0);
+  current = 0.0;
 }
 
 int main(int argc, char *argv[]) {
@@ -156,17 +184,19 @@ int main(int argc, char *argv[]) {
 
     if (imageState == 0) { // still image
       mat4x4_identity(m);
-      mat4x4_rotate_Z(m, m, 3.14159);
+      reset_transformations(m);
       mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
       mat4x4_mul(mvp, p, m);
     }
     else if (imageState == 1) { // translate
       mat4x4_identity(m);
-      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_translate(m, current, current, 1.0);
       mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
       mat4x4_mul(mvp, p, m);
+      current += interval;
     }
     else if (imageState == 2) { // rotate
+      reset_transformations(m);
       mat4x4_identity(m);
       mat4x4_rotate_Z(m, m, (float) glfwGetTime());
       mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
@@ -174,17 +204,20 @@ int main(int argc, char *argv[]) {
     }
     else if (imageState == 3) { // scale
       mat4x4_identity(m);
-      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_rotate_Z(m, m, 3.14159);
+      mat4x4_scale_aniso(m, m, current, current, 1.0);
       mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
       mat4x4_mul(mvp, p, m);
+      current += interval;
     }
     else { // shear
       mat4x4_identity(m);
-      mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+      mat4x4_rotate_Z(m, m, 3.14159);
+      m[0][1] = current;
       mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
       mat4x4_mul(mvp, p, m);
+      current += interval;
     }
-
 
     glUseProgram(program);
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);

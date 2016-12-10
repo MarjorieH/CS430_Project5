@@ -28,3 +28,5 @@ Vertex vertices[] = {
 };
 
 int imageState = 0;
+float interval = 0.01;
+float current = 0.0;
