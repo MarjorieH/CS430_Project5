@@ -1,7 +1,7 @@
 #include <OpenGL/gl.h>
 #include <GLFW/glfw3.h>
 
-#include "../deps/linmath.h"
+#include "linmath.h"
 #include "pixmap.c"
 
 #include <stdlib.h>
